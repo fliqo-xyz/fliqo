@@ -1,0 +1,385 @@
+{
+ "generatedBy": "scripts/sync-stocks.mjs",
+ "generatedAt": "2026-10-27",
+ "beacon": "0xe10b6f6b275de231345c20d14ab812db62151b00",
+ "stocks": [
+  {
+   "symbol": "AAPL",
+   "name": "Apple",
+   "token": "0xaf3d76f1834a1d425780943c99ea8a608f8a93f9",
+   "etf": false,
+   "feed": "0x6B22A786bAa607d76728168703a39Ea9C99f2cD0"
+  },
+  {
+   "symbol": "ADBE",
+   "name": "Adobe",
+   "token": "0x232b8ed6377be97813853b0ac104c4cda8378d1b",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "AMC",
+   "name": "AMC Entertainment",
+   "token": "0x05a3d1cd21d0c88145e82600e62e7e496e0f222b",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "AMD",
+   "name": "AMD",
+   "token": "0x86923f96303d656e4aa86d9d42d1e57ad2023fdc",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "AMZN",
+   "name": "Amazon",
+   "token": "0x12f190a9f9d7d37a250758b26824b97ce941bf54",
+   "etf": false,
+   "feed": "0xD5a1508ceD74c084eBf3cBe853e2C968fB2a651C"
+  },
+  {
+   "symbol": "ASML",
+   "name": "ASML Holding NV",
+   "token": "0x47f93d52cbec7c6d2cfc080e154002370a60daea",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "AVGO",
+   "name": "Broadcom",
+   "token": "0x156e175dd063a8ce274c50654ef40e0032b3fbcf",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "BA",
+   "name": "Boeing",
+   "token": "0x4d21483a44bf67a86b77e3da301411880797d452",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "BABA",
+   "name": "Alibaba",
+   "token": "0xad25ac6c84d497db898fa1e8387bf6af3532a1c4",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "COIN",
+   "name": "Coinbase",
+   "token": "0x6330d8c3178a418788df01a47479c0ce7ccf450b",
+   "etf": false,
+   "feed": "0xA3a468A452940B7D6b69991207B508c609a98Ef2"
+  },
+  {
+   "symbol": "COST",
+   "name": "Costco",
+   "token": "0x4ea005168d7f09a7a0ba9d1def21a479950e44c2",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "CRCL",
+   "name": "Circle Internet Group",
+   "token": "0xdf0992e440dd0be65bd8439b609d6d4366bf1cb5",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "CRM",
+   "name": "Salesforce",
+   "token": "0xd95b44124e475743a7589e68f3d74008a5536d44",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "CRWV",
+   "name": "CoreWeave",
+   "token": "0x5f10a1c971b69e47e059e1dc91901b59b3fb49c3",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "DELL",
+   "name": "Dell",
+   "token": "0x941ae714ec6d8130c7b75d67160ca08f1e7d11dd",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "FIG",
+   "name": "Figma",
+   "token": "0x41f4267525a8aff329540ef24fd83d9044758b33",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "GLD",
+   "name": "SPDR Gold Trust",
+   "token": "0xc9a981fee1f9dec688bb123ccdecc63d0debfc4e",
+   "etf": true,
+   "feed": null
+  },
+  {
+   "symbol": "GME",
+   "name": "GameStop",
+   "token": "0x1b0e319c6a659f002271b69db8a7df2f911c153e",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "GOOGL",
+   "name": "Alphabet Class A",
+   "token": "0x2e0847e8910a9732eb3fb1bb4b70a580adad4fe3",
+   "etf": false,
+   "feed": "0xF6f373a037c30F0e5010d854385cA89185AE638b"
+  },
+  {
+   "symbol": "HIMS",
+   "name": "Hims & Hers Health",
+   "token": "0xccee82fe024c36fa15e1005ede3e9e4787e23d09",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "IBM",
+   "name": "IBM",
+   "token": "0x980dcf6766fa79f5cf0c4aadb3ab477ff15a9619",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "INTC",
+   "name": "Intel",
+   "token": "0xc72b96e0e48ecd4dc75e1e45396e26300bc39681",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "JNJ",
+   "name": "Johnson & Johnson",
+   "token": "0x03dfbbe0ac4e7bcdafd08ed41a400326b77d8c80",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "LLY",
+   "name": "Eli Lilly",
+   "token": "0x8005d266423c7ea827372c9c864491e5786600ea",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "META",
+   "name": "Meta Platforms",
+   "token": "0xc0d6457c16cc70d6790dd43521c899c87ce02f35",
+   "etf": false,
+   "feed": "0x7C38C00C30BEe9378381E7B6135d7283356D71b1"
+  },
+  {
+   "symbol": "MSFT",
+   "name": "Microsoft",
+   "token": "0xe93237c50d904957cf27e7b1133b510c669c2e74",
+   "etf": false,
+   "feed": "0x45C3C877C15E6BA2EBB19eA114Ea508d14C1Af2E"
+  },
+  {
+   "symbol": "MSTR",
+   "name": "Strategy Inc.",
+   "token": "0xec262a75e413fafd0df80480274532c79d42da09",
+   "etf": false,
+   "feed": "0x396118bdFB181e6240E74D243F266B061c0edc3D"
+  },
+  {
+   "symbol": "MU",
+   "name": "Micron Technology",
+   "token": "0xff080c8ce2e5feadaca0da81314ae59d232d4afd",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "NFLX",
+   "name": "Netflix",
+   "token": "0xe0444ef8bf4ed74f74fd73686e2ddf4c1c5591e8",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "NVDA",
+   "name": "NVIDIA",
+   "token": "0xd0601ce157db5bdc3162bbac2a2c8af5320d9eec",
+   "etf": false,
+   "feed": "0x379EC4f7C378F34a1B47E4F3cbeBCbAC3E8E9F15"
+  },
+  {
+   "symbol": "ORCL",
+   "name": "Oracle",
+   "token": "0xb0992820e760d836549ba69bc7598b4af75dee03",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "PFE",
+   "name": "Pfizer",
+   "token": "0x7066a64c24e4206cd62e83bf198c1e7eb361f51e",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "PLTR",
+   "name": "Palantir Technologies",
+   "token": "0x894e1ec2d74ffe5aef8dc8a9e84686accb964f2a",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "QCOM",
+   "name": "Qualcomm",
+   "token": "0x0f17206447090e464c277571124dd2688e48aea9",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "QQQ",
+   "name": "Invesco QQQ",
+   "token": "0xd5f3879160bc7c32ebb4dc785f8a4f505888de68",
+   "etf": true,
+   "feed": "0x80901d846d5D7B030F26B480776EE3b29374C2ae"
+  },
+  {
+   "symbol": "RBLX",
+   "name": "Roblox",
+   "token": "0xf0c4bf4c582cb3836e98394b1d4e7b7281101be8",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "RDDT",
+   "name": "Reddit",
+   "token": "0x05b37fb53a299a1b874a619e1c4c404d52c36f4c",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "RIVN",
+   "name": "Rivian Automotive",
+   "token": "0xb1bf26c1d20ff267a4f93550d1e0d06ac40a114b",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "RKLB",
+   "name": "Rocket Lab Corporation",
+   "token": "0x3b14c39e89d60d627b42a1a4ca45b5bb45fc12e2",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "SHOP",
+   "name": "Shopify",
+   "token": "0xf53f66751b1eff985311b693531e3290f600c410",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "SLV",
+   "name": "iShares Silver Trust",
+   "token": "0x411efb0e7f985935daec3d4c3ebaea0d0ad7d89f",
+   "etf": true,
+   "feed": "0x209b73908e92Ae021826eD79609845451Ecba2ce"
+  },
+  {
+   "symbol": "SMCI",
+   "name": "Super Micro Computer",
+   "token": "0xc01aa1fecec0605b13bc84874ff7256c0f5f562a",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "SNDK",
+   "name": "Sandisk Corporation",
+   "token": "0xb90a19ff0af67f7779aff50a882a9cff42446400",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "SNOW",
+   "name": "Snowflake",
+   "token": "0xba0cab75495255d0cb58e22b648bfed4ecd1f47e",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "SPCX",
+   "name": "Space Exploration Technologies Corp. Class A Common Stock",
+   "token": "0x4a0e65a3eccec6dbe60ae065f2e7bb85fae35eea",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "SPY",
+   "name": "SPDR S&P 500 ETF Trust",
+   "token": "0x117cc2133c37b721f49de2a7a74833232b3b4c0c",
+   "etf": true,
+   "feed": "0x319724394D3A0e3669269846abE664Cd621f9f6A"
+  },
+  {
+   "symbol": "TSLA",
+   "name": "Tesla",
+   "token": "0x322f0929c4625ed5bad873c95208d54e1c003b2d",
+   "etf": false,
+   "feed": "0x4A1166a659A55625345e9515b32adECea5547C38"
+  },
+  {
+   "symbol": "TSM",
+   "name": "Taiwan Semiconductor Manufacturing",
+   "token": "0x58ffe4a942d3885baa22d7520691f611ef09e7aa",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "UNH",
+   "name": "UnitedHealth",
+   "token": "0xcf364ea52787e289de6f32077834056e3e70d6a8",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "USAR",
+   "name": "USA Rare Earth",
+   "token": "0xd917b029c761d264c6a312bbbcda868658ef86a6",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "USO",
+   "name": "United States Oil Fund",
+   "token": "0xa30fa36db767ad9ed3f7a60fc79526fb4d56d344",
+   "etf": true,
+   "feed": null
+  },
+  {
+   "symbol": "VTI",
+   "name": "Vanguard Morningstar Total Stock Market ETF",
+   "token": "0x0594134df3f171a354d9c85ebd65b7a6148f6d09",
+   "etf": true,
+   "feed": null
+  },
+  {
+   "symbol": "WDC",
+   "name": "Western Digital",
+   "token": "0xf52597345a8edf418bc4071b4a35112472277d3e",
+   "etf": false,
+   "feed": null
+  },
+  {
+   "symbol": "XOM",
+   "name": "ExxonMobil Holdings Corporation",
+   "token": "0xf9b46d3d1b22199d4d1025a9cedb540a33f1a2d5",
+   "etf": false,
+   "feed": null
+  }
+ ]
+}
