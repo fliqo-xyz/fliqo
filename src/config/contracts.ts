@@ -8,9 +8,9 @@ import { isAddress } from "@/config/brand";
  * Check a deployment any time: `npm run verify-deployment -- --book <address> --book-tx <tx>`.
  */
 const DEPLOYED = {
-  watch: "",
+  watch: "0x6b7bd113b27169d4dddb79f1381f07cb4d26f0c9",
   /** Block of the FliqoWatchBook deployment (informational). */
-  watchBlock: 0,
+  watchBlock: 101518231,
 };
 
 /**

@@ -12,7 +12,7 @@ import { CardHead, Change, Loading, NOT_ADVICE, Problem, Src } from "@/component
 import { Tok } from "@/components/ui/Tok";
 import { StarIcon } from "@/components/site/Icons";
 import { NATIVE, SOURCE_NAME, type TokenRow } from "@/lib/market";
-import type { TapeItem } from "@/lib/server/market";
+import type { Tape, TapeItem } from "@/lib/server/market";
 import { useWatch } from "@/lib/stores";
 import { useJson } from "@/lib/useJson";
 import { ago, amount, usdShort } from "@/lib/format";
@@ -61,7 +61,20 @@ function sideTag(side: "buy" | "sell") {
   return <span className={`fq-tag ${side === "buy" ? "lime" : "ember"}`}>● {side}</span>;
 }
 
-function LiveSwaps({ items, error }: { items: TapeItem[] | null; error: string | null }) {
+/** "updated 40s ago · newest swap 2m ago" with "delayed" when the answer came from an old cache. */
+function TapeFreshness({ tape }: { tape: Tape | null }) {
+  if (!tape) return null;
+  return (
+    <span data-testid="tape-fresh">
+      updated {ago(tape.at)}
+      {tape.newest !== null ? <> · newest swap {ago(tape.newest)}</> : null}
+      {tape.stale ? <b className="ml-1 text-ember">delayed</b> : null}
+    </span>
+  );
+}
+
+function LiveSwaps({ tape, error }: { tape: Tape | null; error: string | null }) {
+  const items = tape?.items ?? null;
   const router = useRouter();
   const rows = (items ?? []).slice(0, 6);
   const buys = rows.filter((r) => r.side === "buy").length;
@@ -75,10 +88,11 @@ function LiveSwaps({ items, error }: { items: TapeItem[] | null; error: string |
         <span>
           size <b className="text-fg">{usdShort(rows.length ? vol : null)}</b>
         </span>
+        <TapeFreshness tape={tape} />
       </CardHead>
       {items === null && !error ? <div className="fq-card-body"><Loading label="Reading the busiest pools…" /></div> : null}
       {error && !items ? <div className="fq-card-body"><Problem>{error}</Problem></div> : null}
-      {items && !rows.length ? <p className="fq-note px-8 py-6">No swaps read yet: the public data source is busy. Retrying every 45 seconds.</p> : null}
+      {items && !rows.length ? <p className="fq-note px-8 py-6">No swaps could be read just now: the public data source is busy or the busiest pools had no recent trade. Retrying every 45 seconds.</p> : null}
       {rows.length ? (
         <div className="fq-scroll">
           <table className="fq-table" data-testid="live-swaps">
@@ -326,7 +340,7 @@ function Movers({ items }: { items: TapeItem[] | null }) {
       </div>
       <div className="fq-card mt-20">
         <CardHead title="Tape" tag={SOURCE_NAME}>
-          <span>every swap of the busiest pools, live</span>
+          <span>latest swaps of the pools with the most trades this hour</span>
         </CardHead>
         <ul data-testid="tape">
           {(items ?? []).slice(0, 10).map((t, i) => (
@@ -345,18 +359,18 @@ function Movers({ items }: { items: TapeItem[] | null }) {
         </ul>
       </div>
       <p className="fq-note mt-6">
-        {NOT_ADVICE} Swaps and sizes: {SOURCE_NAME} trades of the busiest pools on {BRAND.chainName}.
+        {NOT_ADVICE} Swaps and sizes: {SOURCE_NAME} trades of the pools with the most trades in the last hour on {BRAND.chainName}, read about every 45 seconds.
       </p>
     </section>
   );
 }
 
 export function HomeView() {
-  const { data, error } = useJson<{ items: TapeItem[] }>("/api/tape", 45_000);
+  const { data, error } = useJson<Tape>("/api/tape", 45_000);
   return (
     <div className="fq-wrap pt-14">
       <Hero />
-      <LiveSwaps items={data?.items ?? null} error={error} />
+      <LiveSwaps tape={data} error={error} />
       <Markets />
       <Movers items={data?.items ?? null} />
     </div>

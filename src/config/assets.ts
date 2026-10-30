@@ -1,12 +1,13 @@
 /*
- * Every brand image path in one place. All of them are drawn by referensi/tools/make-brand.mjs (our own artwork,
- * made while the owner's files are pending). To swap an image, replace the file at the same path, or point the
- * path here at a new file; no component hard-codes an image path.
+ * Every brand image path in one place. The brand files (mark, wordmark, mark-square, icon, favicon, share card) come
+ * from the owner's artwork (30 Oct 2026) via 2026/oktober/30/assets/apply-owner-assets.mjs; the art/ images are still
+ * drawn by referensi/tools/make-brand.mjs. To swap an image, replace the file at the same path, or point the path
+ * here at a new file; no component hard-codes an image path.
  */
 export const ASSETS = {
   /** Transparent mark (header, footer). */
   mark: "/brand/mark.webp",
-  /** Word mark: mark + "fliqo" set in the site's type (header on wide screens). */
+  /** Word mark: the owner's F mark + "Fliqo", keyed out of the banner, 322x120 (header). */
   wordmark: "/brand/wordmark.webp",
   /** Padded mark on the dark plate (wallet avatar, token avatar). */
   markSquare: "/brand/mark-square.webp",

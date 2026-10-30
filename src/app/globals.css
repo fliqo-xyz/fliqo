@@ -247,6 +247,10 @@
     color: var(--ember-text);
     border-color: rgba(250, 56, 18, 0.45);
   }
+  .fq-tag.warn {
+    color: var(--warn);
+    border-color: rgba(245, 195, 91, 0.45);
+  }
   .fq-search {
     display: flex;
     align-items: center;

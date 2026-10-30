@@ -8,7 +8,9 @@ import {
   movers,
   normalizeCandles,
   normalizePools,
+  newestTrade,
   normalizeTrades,
+  pickTapePools,
   tokensFromPools,
   uniquePools,
   type Candle,
@@ -205,24 +207,84 @@ export async function sparks(pools: string[]): Promise<Record<string, number[] |
 /** One swap of the site-wide tape: a trade of one of the busiest pools, with that pool's names attached. */
 export type TapeItem = Trade & { pool: string; poolName: string; base: { address: string; symbol: string }; quoteSymbol: string };
 
+/** One pool the tape read: when its trade list was fetched and its newest trade (ms), or null. */
+export type TapePool = { address: string; name: string; venueLabel: string; fetchedAt: number | null; newest: number | null };
+
+export type Tape = {
+  /** Oldest fetch time of the trade lists shown (ms): the tape is at least this fresh. */
+  at: number;
+  /** True when a list was served from cache past its time or a pool could not be read. */
+  stale: boolean;
+  /** Newest swap on the tape (ms), or null when no swap was read. */
+  newest: number | null;
+  pools: TapePool[];
+  items: TapeItem[];
+};
+
+/** A pool whose newest trade is older than this is replaced by the next busiest one. */
+export const TAPE_QUIET_MS = 2 * 3_600_000;
+const HUB_SET: ReadonlySet<string> = new Set([NATIVE, WETH_LOW, USDG_LOW]);
+
 /**
- * Recent swaps across the busiest pools (GeckoTerminal trades of the top `n` pools by 24h volume, merged and
- * sorted newest first). Low-priority calls, cached 45 s each, so the tape never starves the lists.
+ * Recent swaps across the pools with the most trades in the last hour (see pickTapePools), merged newest first.
+ * Trade lists are priority reads (the tape is on every page), cached 45 s each and shared through the store. A pool
+ * whose feed turns out quiet (no trade in two hours) is swapped for the next candidate once. Nothing is invented:
+ * when nothing can be read the answer is an empty list with the time of the last successful read.
  */
-export async function tape(n = 3): Promise<{ at: number; stale: boolean; items: TapeItem[] }> {
+export async function tape(n = 4): Promise<Tape> {
   const top = await topPools();
-  // Hub-only pairs (ETH, WETH, USDG against each other) are skipped: the tape follows the tokens traded against them.
-  const hub = new Set([NATIVE, WETH_LOW, USDG_LOW]);
-  const pools = [...top.pools].filter((p) => !hub.has(p.base.address)).sort((a, b) => (b.volume24h ?? 0) - (a.volume24h ?? 0)).slice(0, n);
-  const lists = await Promise.allSettled(pools.map((p) => trades(p.address)));
+  const candidates = pickTapePools(top.pools, HUB_SET, n + 3);
+  type Read = { pool: PoolRow; trades: Trade[]; at: number; stale: boolean } | { pool: PoolRow; failed: true };
+  const read = (pools: PoolRow[]) =>
+    Promise.all(
+      pools.map(async (pool): Promise<Read> => {
+        try {
+          const r = await gecko<unknown>(`/pools/${pool.address}/trades`, TRADES_TTL, true);
+          return { pool, trades: normalizeTrades(r.value), at: r.at, stale: r.stale };
+        } catch {
+          return { pool, failed: true };
+        }
+      }),
+    );
+  const now = Date.now();
+  const quiet = (r: Read) => "failed" in r || (newestTrade(r.trades) ?? 0) < now - TAPE_QUIET_MS;
+  let reads = await read(candidates.slice(0, n));
+  const spare = candidates.slice(n, n + reads.filter(quiet).length);
+  if (spare.length) {
+    const extra = (await read(spare)).filter((r) => !quiet(r));
+    // Keep the busy reads, then fill with the spare pools that do have recent trades, then the quiet ones.
+    reads = [...reads.filter((r) => !quiet(r)), ...extra, ...reads.filter(quiet)].slice(0, n);
+  }
   const items: TapeItem[] = [];
-  lists.forEach((r, i) => {
-    if (r.status !== "fulfilled") return;
-    const p = pools[i];
-    for (const t of r.value.slice(0, 20)) items.push({ ...t, pool: p.address, poolName: p.name, base: { address: p.base.address, symbol: p.base.symbol }, quoteSymbol: p.quote.symbol });
-  });
+  const pools: TapePool[] = [];
+  let at = Number.POSITIVE_INFINITY;
+  let stale = top.stale;
+  for (const r of reads) {
+    const p = r.pool;
+    if ("failed" in r) {
+      stale = true;
+      pools.push({ address: p.address, name: p.name, venueLabel: p.venueLabel, fetchedAt: null, newest: null });
+      continue;
+    }
+    at = Math.min(at, r.at);
+    stale ||= r.stale;
+    pools.push({ address: p.address, name: p.name, venueLabel: p.venueLabel, fetchedAt: r.at, newest: newestTrade(r.trades) });
+    // GeckoTerminal sides refer to the base token; a "USDG / TOKEN" pool is shown from the token's side.
+    const flip = HUB_SET.has(p.base.address) && !HUB_SET.has(p.quote.address);
+    const coin = flip ? p.quote : p.base;
+    const other = flip ? p.base : p.quote;
+    for (const t of r.trades.slice(0, 20))
+      items.push({
+        ...(flip ? { ...t, side: t.side === "buy" ? "sell" : "buy" } : t),
+        pool: p.address,
+        poolName: p.name,
+        base: { address: coin.address, symbol: coin.symbol },
+        quoteSymbol: other.symbol,
+      });
+  }
   items.sort((a, b) => (b.time ?? 0) - (a.time ?? 0));
-  return { at: top.at, stale: top.stale || lists.some((r) => r.status !== "fulfilled"), items: items.slice(0, 48) };
+  const shown = items.slice(0, 48);
+  return { at: Number.isFinite(at) ? at : top.at, stale, newest: newestTrade(shown), pools, items: shown };
 }
 
 export type Overview = {

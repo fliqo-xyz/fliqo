@@ -6,6 +6,9 @@ import { BRAND, chartUrl, explorerAddress, explorerToken, shortAddress } from "@
 import { ASSETS } from "@/config/assets";
 import { Candles } from "@/components/trade/Candles";
 import { SwapPreview } from "@/components/coin/SwapPreview";
+import { SellCheckCard } from "@/components/coin/SellCheck";
+import { LockCard } from "@/components/coin/LockStatus";
+import { USDG, WETH } from "@/config/brand";
 import { CardHead, Change, Loading, NOT_ADVICE, Problem, Src } from "@/components/ui/kit";
 import { Tok } from "@/components/ui/Tok";
 import { StarIcon } from "@/components/site/Icons";
@@ -19,6 +22,7 @@ import { age, ago, amount, int, price, usdShort } from "@/lib/format";
 export type TokenAnswer = { address: string; kind: string; native: boolean; facts: TokenFacts | null; pools: PoolRow[]; poolsAt: number; poolsStale: boolean; checks: Check[]; at: number };
 type PoolAnswer = { pool: PoolRow | null; trades: Trade[]; candles: Candle[]; at: number; stale: boolean };
 
+const HUBS = new Set(["0x0000000000000000000000000000000000000000", WETH.toLowerCase(), USDG.address.toLowerCase()]);
 const TFS = ["1m", "5m", "15m", "1h", "4h", "1d"] as const;
 
 function CheckList({ checks }: { checks: Check[] }) {
@@ -242,6 +246,8 @@ export function CoinView({ address }: { address: string }) {
   // A Pons coin (still on its curve or graduated): from its pools, or from the market board while the index loads.
   const pons = pools.some((p) => p.venue.startsWith("pons")) || (!pools.length && /pons/i.test(row?.venueLabel ?? ""));
   const tokenRef = { address, symbol, logo: main?.base.address === address ? main.base.logo : null };
+  // Sell and lock checks are for tokens traded against the hubs, once the pool index has answered.
+  const checkable = pools.length > 0 && !HUBS.has(address);
 
   return (
     <div className="fq-wrap pt-12">
@@ -296,11 +302,13 @@ export function CoinView({ address }: { address: string }) {
           </section>
           <ChartCard pool={main} />
           <ChecksCard token={token} pools={pools} />
+          <SellCheckCard token={checkable ? address : null} symbol={symbol} />
+          <LockCard token={checkable ? address : null} symbol={symbol} />
           <PoolsCard pools={pools} busy={Boolean(token?.poolsStale) && !pools.length} />
           <TapeCard pool={main} symbol={symbol} />
         </div>
         <aside className="lg:sticky lg:top-[120px]">
-          <SwapPreview token={address} symbol={symbol} decimals={token?.facts?.decimals ?? main?.base.decimals ?? null} priceUsd={main?.priceUsd ?? row?.priceUsd ?? null} pons={pons} pool={main} />
+          <SwapPreview token={address} checkable={checkable} symbol={symbol} decimals={token?.facts?.decimals ?? main?.base.decimals ?? null} priceUsd={main?.priceUsd ?? row?.priceUsd ?? null} pons={pons} pool={main} />
           <p className="fq-note mt-4">
             {BRAND.name} never routes or holds funds. The swap itself happens in your wallet on {pons ? "Pons" : "the DEX"}.
           </p>

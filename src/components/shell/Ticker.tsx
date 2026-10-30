@@ -2,19 +2,19 @@
 
 import Link from "next/link";
 import { shortAddress } from "@/config/brand";
-import type { TapeItem } from "@/lib/server/market";
+import type { Tape } from "@/lib/server/market";
 import { useJson } from "@/lib/useJson";
-import { usdShort } from "@/lib/format";
+import { ago, usdShort } from "@/lib/format";
 
 /* Header band: recent swaps of the busiest Robinhood Chain pools (GeckoTerminal trades), scrolling. */
 export function Ticker() {
-  const { data } = useJson<{ items: TapeItem[] }>("/api/tape", 45_000);
+  const { data, error } = useJson<Tape>("/api/tape", 45_000);
   const items = (data?.items ?? []).slice(0, 16);
   return (
     <div className="fq-ticker" aria-label="Recent swaps on Robinhood Chain">
       <div className="fq-ticker-label">
         <span className="fq-live-dot" aria-hidden="true" />
-        Live <span className="text-muted">· swaps</span>
+        Live <span className="text-muted">· swaps{data ? ` · ${ago(data.at)}` : ""}</span>
       </div>
       <div className="min-w-0 flex-1 overflow-hidden">
         {items.length ? (
@@ -29,7 +29,7 @@ export function Ticker() {
             ))}
           </div>
         ) : (
-          <div className="fq-ticker-item">Reading recent swaps from GeckoTerminal…</div>
+          <div className="fq-ticker-item">{error || (data && !items.length) ? "Recent swaps cannot be read right now. Retrying shortly." : "Reading recent swaps from GeckoTerminal…"}</div>
         )}
       </div>
     </div>

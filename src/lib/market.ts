@@ -308,3 +308,42 @@ export function venueSummary(pools: PoolRow[]): VenueSummary[] {
 
 /** True when a pool address or v4 id is well formed. */
 export const isPoolAddress = (v: string) => HEX_ADDR.test(v.toLowerCase());
+
+/** Recent activity of a pool: trades in the last hour, else an hourly share of the last 24 hours, else 0. */
+export function recentTxns(p: PoolRow): number {
+  if (p.txns1h !== null) return p.txns1h;
+  return p.txns24h !== null ? p.txns24h / 24 : 0;
+}
+
+/**
+ * Pools the swap tape reads, busiest first by trades in the last hour (not by 24 h volume: a pool can show a large
+ * volume and no trades for hours). Any venue counts (v2, v3, v4, curves). Pools of a token against a hub (ETH,
+ * WETH, USDG) come first, one pool per token so the tape shows several tokens; pools of two hubs only fill the
+ * remaining places. Pools without any recent trade are never picked.
+ */
+export function pickTapePools(pools: PoolRow[], hubs: ReadonlySet<string>, n: number): PoolRow[] {
+  const active = pools.filter((p) => recentTxns(p) > 0).sort((a, b) => recentTxns(b) - recentTxns(a) || (b.volume24h ?? 0) - (a.volume24h ?? 0));
+  const hubPair = (p: PoolRow) => hubs.has(p.base.address) && hubs.has(p.quote.address);
+  const out: PoolRow[] = [];
+  const tokens = new Set<string>();
+  for (const p of active) {
+    if (out.length >= n) break;
+    if (hubPair(p)) continue;
+    const token = hubs.has(p.base.address) ? p.quote.address : p.base.address;
+    if (tokens.has(token)) continue;
+    tokens.add(token);
+    out.push(p);
+  }
+  for (const p of active) {
+    if (out.length >= n) break;
+    if (hubPair(p)) out.push(p);
+  }
+  return out;
+}
+
+/** Newest trade time of a list (ms), or null. */
+export function newestTrade(list: Trade[]): number | null {
+  let max: number | null = null;
+  for (const t of list) if (t.time !== null && (max === null || t.time > max)) max = t.time;
+  return max;
+}

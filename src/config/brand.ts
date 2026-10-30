@@ -8,9 +8,9 @@ const CA: string = "TBA";
 /**
  * True once the domain points at this deployment. While false, the production *.vercel.app host is served
  * as is (kept out of search with noindex) instead of redirecting to a domain that does not serve the site.
- * 29 Oct 2026: fliqo.xyz is registered (Cloudflare name servers) but does not point at this deployment yet.
+ * 30 Oct 2026: fliqo.xyz serves this deployment (www redirects to it).
  */
-export const DOMAIN_LIVE = false;
+export const DOMAIN_LIVE = true;
 
 export const isAddress = (v: string): v is `0x${string}` => /^0x[0-9a-fA-F]{40}$/.test(v);
 
@@ -19,8 +19,8 @@ const SLUG = "fliqo";
 /** Shown upper case everywhere; the owner wrote it as $fliqo. */
 const TICKER = "FLIQO";
 const DOMAIN = "fliqo.xyz";
-/** X account exactly as given in the owner order (x.com/fliqo). Generic-looking; confirm with the owner. */
-const X_HANDLE = "fliqo";
+/** X account confirmed by the owner on 30 Oct 2026. */
+const X_HANDLE = "fliqoxyz";
 
 export const BRAND = {
   name: NAME,

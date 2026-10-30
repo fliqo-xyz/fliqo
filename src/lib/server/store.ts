@@ -2,7 +2,8 @@ import "server-only";
 import { createClient } from "redis";
 
 /*
- * Storage for rate limits (the RPC relay budget).
+ * Storage for rate limits (the RPC relay budget) and the shared GeckoTerminal cache, budget and fetch locks
+ * (src/lib/gtcache.ts, keys fliqo:gt:*), plus cached chain answers (sell checks, token locks).
  *
  * Production uses Redis, configured with one of
  *   KV_REDIS_URL or REDIS_URL           a redis:// or rediss:// connection URL
@@ -14,7 +15,8 @@ import { createClient } from "redis";
  * limited to its own keys.
  *
  * Without those there is no store: the rate limiter keeps per-instance counters in memory
- * (see src/lib/ratelimit.ts), which is enough for a local run and a single region.
+ * (see src/lib/ratelimit.ts) and every cache lives in the instance's memory, which is enough for a local run and a
+ * single region.
  */
 
 export type Store = {

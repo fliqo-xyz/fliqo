@@ -71,7 +71,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
       <header className="fq-header">
         <div className="fq-header-row">
           <Link href="/" className="flex shrink-0 items-center gap-2" aria-label={`${BRAND.name} home`}>
-            <img src={ASSETS.wordmark} alt={BRAND.name} width={96} height={30} className="h-[30px] w-auto" />
+            <img src={ASSETS.wordmark} alt={BRAND.name} width={81} height={30} className="h-[30px] w-auto" />
           </Link>
           <nav className="fq-nav fq-hide-960" aria-label="Main">
             {NAV.map((n) => (

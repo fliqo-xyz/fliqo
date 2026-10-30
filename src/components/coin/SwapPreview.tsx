@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { LAUNCHPAD, chartUrl } from "@/config/brand";
 import { useChain } from "@/components/providers/ChainProvider";
 import { Loading, Problem, Src } from "@/components/ui/kit";
+import { SellCheckLine } from "@/components/coin/SellCheck";
 import { NATIVE, type PoolRow } from "@/lib/market";
 import { costPct, minReceived, type RouteQuote } from "@/lib/routes";
 import { useSlippage } from "@/lib/stores";
@@ -25,7 +26,7 @@ type QuoteAnswer = {
 const SLIPS = [50, 100, 300];
 
 /** Read-only route preview for one token against ETH. Nothing here signs or sends anything. */
-export function SwapPreview({ token, symbol, decimals, priceUsd, pons, pool }: { token: string; symbol: string; decimals: number | null; priceUsd: number | null; pons: boolean; pool: PoolRow | null }) {
+export function SwapPreview({ token, checkable = false, symbol, decimals, priceUsd, pons, pool }: { token: string; checkable?: boolean; symbol: string; decimals: number | null; priceUsd: number | null; pons: boolean; pool: PoolRow | null }) {
   const [side, setSide] = useState<"buy" | "sell">("buy");
   const [text, setText] = useState("0.01");
   const [debounced, setDebounced] = useState("0.01");
@@ -121,7 +122,7 @@ export function SwapPreview({ token, symbol, decimals, priceUsd, pons, pool }: {
         {data && !best ? (
           <p className="fq-note">
             No route answered for this size.{" "}
-            {side === "sell" && data.sellOnCurve ? "Sells on a Pons curve need a token approval, so they are not simulated here; open Pons for the exact amount." : "The pools may be too thin or not on a quoter Fliqo reads (Uniswap v2/v3/v4, Pons curve buys)."}
+            {side === "sell" && data.sellOnCurve ? "Sell quotes on a Pons curve are not read by the quoters; the sell check on this page simulates a small curve sell. Open Pons for the exact amount." : "The pools may be too thin or not on a quoter Fliqo reads (Uniswap v2/v3/v4, Pons curve buys)."}
           </p>
         ) : null}
         {best ? (
@@ -156,6 +157,7 @@ export function SwapPreview({ token, symbol, decimals, priceUsd, pons, pool }: {
             </div>
           </dl>
         ) : null}
+        <SellCheckLine token={checkable ? token : null} />
         {routes.length > 1 ? (
           <details className="mt-3">
             <summary className="cursor-pointer text-[13px] text-muted">Every route</summary>
