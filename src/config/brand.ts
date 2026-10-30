@@ -37,8 +37,8 @@ export const BRAND = {
   description: `${NAME} is a trading intelligence site for Robinhood Chain: find tokens and pools, compare two markets side by side, read a token contract's configuration checks and preview a swap route before you trade. ${NAME} never routes or holds funds; the swap itself happens in your wallet on the DEX or on Pons.`,
   x: `https://x.com/${X_HANDLE}`,
   xHandle: `@${X_HANDLE}`,
-  // Public source repository. Empty until the owner publishes it; the site hides every GitHub link meanwhile.
-  github: "",
+  // Public source repository (open source, MIT).
+  github: "https://github.com/fliqo-xyz/fliqo",
   ca: CA,
 } as const;
 
