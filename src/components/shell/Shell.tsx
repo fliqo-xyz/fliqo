@@ -7,7 +7,7 @@ import { BRAND, TOKEN, buyUrl, explorerAddress, explorerToken, hasGithub, isAddr
 import { ASSETS } from "@/config/assets";
 import { CONTRACTS, watchLive } from "@/config/contracts";
 import { CaPill } from "@/components/site/CopyCa";
-import { SearchIcon } from "@/components/site/Icons";
+import { GithubIcon, SearchIcon } from "@/components/site/Icons";
 import { Ticker } from "@/components/shell/Ticker";
 import { NavWallet } from "@/components/wallet/WalletButton";
 
@@ -92,6 +92,11 @@ export function Shell({ children }: { children: React.ReactNode }) {
               <CaPill />
             </span>
             <HeaderSearch />
+            {hasGithub ? (
+              <a href={BRAND.github} target="_blank" rel="noreferrer" aria-label={`${BRAND.name} source code on GitHub`} title="Source code on GitHub" className="fq-hide-680 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-line text-muted transition-colors hover:text-fg">
+                <GithubIcon size={18} />
+              </a>
+            ) : null}
             <NavWallet label="Connect wallet" className="fq-btn arrow" />
           </div>
         </div>
@@ -157,7 +162,8 @@ function Footer() {
             X {BRAND.xHandle}
           </a>
           {hasGithub ? (
-            <a href={BRAND.github} target="_blank" rel="noreferrer" className="hover:text-text-2">
+            <a href={BRAND.github} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 hover:text-text-2">
+              <GithubIcon size={14} />
               GitHub
             </a>
           ) : null}
