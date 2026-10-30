@@ -7,7 +7,7 @@ import { rpcBatch } from "@/lib/feeds/rpc";
 
 /*
  * Live facts for the whole site, all read from Robinhood Chain: the latest block and gas, the block pace,
- * ETH / USD from Chainlink, the token once its address is published and the OrdiqPlanBook once deployed.
+ * ETH / USD from Chainlink, the token once its address is published, and FliqoWatchBook totals.
  */
 
 export type ChainSnapshot = {
